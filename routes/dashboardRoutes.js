@@ -13,18 +13,22 @@ router.get('/', async (req, res) => {
             'title',
             'created_at'
         ],
-    })
-    try {
-    // Get all projects and JOIN with user data
-    const locationData = await Location.findAll({
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['id','comment_text','post_id','user_id','created_at'],
+          include: {
+              model: User,
+              attributes: ['username']
+          }
         },
-      ],
+        {
+          model: User,
+          attributes: ['username']
+        }
+      ]
     })
-    .then('dbPostData => { 
+    .then(dbPostData => {
       const posts = dbPostData.map(post => post.get({ plain: true})); 
       res.render('dashboard', { posts, loggedIn: true });
     })
