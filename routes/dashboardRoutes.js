@@ -13,18 +13,22 @@ router.get('/', async (req, res) => {
             'title',
             'created_at'
         ],
-    })
-    try {
-    // Get all projects and JOIN with user data
-    const locationData = await Location.findAll({
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['id','comment_text','post_id','user_id','created_at'],
+          include: {
+              model: User,
+              attributes: ['username']
+          }
         },
-      ],
+        {
+          model: User,
+          attributes: ['username']
+        }
+      ]
     })
-    .then('dbPostData => { 
+    .then(dbPostData => {
       const posts = dbPostData.map(post => post.get({ plain: true})); 
       res.render('dashboard', { posts, loggedIn: true });
     })
@@ -33,21 +37,42 @@ router.get('/', async (req, res) => {
   })
 });
 
-router.get('/', async (req, res) => {
-  try {
-    const locationsData = await Location.findAll({
-      include: [
-        {
-          model: Review,
-          attributes: ['id', 'description', 'user_id', 'location_id']
+router.get('/edit/:id', (req, res) => {
+  Post.findOne({
+    where: {
+      id: req.params.id
+    },
+    attributes: [
+      'id',
+      'post_body',
+      'title',
+      'created_at'
+    ],
+    include: [
+      {
+        model: Comment,
+        attributes: ['id', 'comment_text', 'post_id', 'created_at'],
+        include: {
+          model: User,
+          attributes: ['username']
         }
-      ]
-    });
-    const locations = locationsData.map((location) => location.get({ plain: true }));
-    res.render("locations", {locations,  logged_in: req.session.logged_in});
-  } catch (err) {
+      },
+      {
+      model: User,
+      attributes: ['username']
+      }
+    ]
+  })
+  .then(dbPostData => {
+    if(!dbPostData) {
+      res.status(404).json({message: "No post with this ID!"})
+      return;
+    }
+    const post = dbPostData.get({plain:true});
+    res.render("edit post", {post,  logged_in: true});
+  }) .catch(err => {
     res.status(500).json(err);
-  }
+  });
 });
 
 
