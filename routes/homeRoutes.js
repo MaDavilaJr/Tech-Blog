@@ -5,21 +5,22 @@ const withAuth = require('../utils/auth');
 router.get('/', async (req, res) => {
   try {
     // Get all projects and JOIN with user data
-    const locationData = await Location.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
-    });
+    // const locationData = await Location.findAll({
+    //   include: [
+    //     {
+    //       model: User,
+    //       attributes: ['name'],
+    //     },
+    //   ],
+    // });
 
-    // Serialize data so the template can read it
-    const locations = locationData.map((location) => location.get({ plain: true }));
+    // // Serialize data so the template can read it
+    // const locations = locationData.map((location) => location.get({ plain: true }));
 
     // Pass serialized data and session flag into template
+    // Posts & comments only 
     res.render('homepage', { 
-      locations, 
+      // locations, 
       logged_in: req.session.logged_in 
     });
   } catch (err) {
