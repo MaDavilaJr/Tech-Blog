@@ -1,0 +1,21 @@
+<div class="text-center">
+  <h2>{{name}}</h2>
+  <p>{{description}}</p>
+  <p>Created by {{user.name}} on {{format_date date_created}}</p>
+  <input id="newComment">
+    <button class="btn btn-primary" id="newCommentBtn">Comment</button>
+  </p>
+</div>
+
+{{#each comments as |comment|}}
+    <div class="row mb-2">
+      <div class="col-md-8">
+        <h5>{{comment.content}}</h5>>
+      </div>
+        <div class="col-md-2">
+        <button class="btn btn-sm btn-danger" id="deleteBtn" data-id="{{comment.id}}">DELETE</button>
+      </div>
+    </div>
+    {{/each}}
+
+<script src="/js/newComment.js"></script>
