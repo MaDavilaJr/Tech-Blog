@@ -1,3 +1,4 @@
+const routes = require("./routes");
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -5,7 +6,7 @@ const sequelize = require('./config/connection')
 const exphbs = require('express-handlebars');
 const helpers = require('./utils/helpers')
 const hbs = exphbs.create({ helpers })
-
+// no locations, no reviews, add html to these pages, then we can kind of take chunks of the other ones as we go 1/18/22
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -25,13 +26,13 @@ app.use(session(sess));
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.set('views', './views');
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//app.use(routes);
+app.use(routes);
 
 sequelize.sync({force: false}).then(() => {
     app.listen(PORT, () => console.log('Now Listening'));
