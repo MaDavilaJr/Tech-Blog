@@ -2,14 +2,14 @@ const router = require('express').Router();
 const { Post } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-router.get('/', async (req, res) => {
-    try {
-      const posts = await Post.findAll();
-      res.status(200).json(posts);
-    } catch (err) {
-      res.status(400).json(err);
-    }
-  });
+// router.get('/', async (req, res) => {
+//     try {
+//       const posts = await Post.findAll();
+//       res.status(200).json(posts);
+//     } catch (err) {
+//       res.status(400).json(err);
+//     }
+//   });
 
 router.post('/', withAuth, async (req, res) => {
     try {
