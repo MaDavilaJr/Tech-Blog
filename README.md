@@ -15,8 +15,6 @@ It's a employee management backend application, the main goal was to write funct
 * [Techologies](#technologies)
 
 
-* [License](#license)
-
 ## Installation
 npm i
 
